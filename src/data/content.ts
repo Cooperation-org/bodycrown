@@ -129,22 +129,3 @@ export type ChatMessage = {
   speaker: Speaker;
   text: string;
 };
-
-export const initialChatMessages: ChatMessage[] = [
-  {
-    id: 1,
-    speaker: "Her",
-    text: "I'm so tired. But I feel guilty even saying it.",
-  },
-  {
-    id: 2,
-    speaker: "Crownie",
-    text: "Come, sit with me a moment. Tired isn't a confession. It's your body telling a truth you've been too busy to hear. You've carried everyone. Who has been carrying you?",
-  },
-];
-
-// Placeholder replies until Crownie is wired to a real backend.
-export const crownieDemoResponses = [
-  "I know. And being used to it is just a quieter way of saying worn thin. You don't have to set it all down tonight. Place one thing on the floor beside you. We can begin there.",
-  "Come, sit with me a moment. Tired isn't a confession. It's your body telling a truth you've been too busy to hear. You've carried everyone. Who has been carrying you?",
-];

@@ -28,7 +28,10 @@ Hub for the Body & Crown website project: where everything lives and how it fits
 
 - **Done:** site ported from Figma Make into this repo (React + Vite + TypeScript), deployed to Vercel.
 - **Done:** "Reserve My Place" signup submits to Mailchimp inline and shows a confirmation on the page.
-- **Open:** Crownie chat (`/crownie`) is a demo with canned replies; needs a real backend.
+- **Done:** Crownie chat (`/crownie`) answers live (MiniMax-M3) and remembers the conversation per browser. API: `server/`, running at https://demos.linkedtrust.us/bodycrown-api/ on the shared dev VM; DB `bodycrown` on the shared Postgres.
+- **Open:** Crownie's instructions in `server/src/crownie.ts` are AI-written placeholders around the site's own copy; replace with the founder's guidance.
+- **Open:** API moves to its own VM: `cobox/ansible/vms/bodycrown/` (needs VM IP and API domain).
+- **Open:** journal.
 - **Open:** deploys are manual (`npx vercel deploy --prod`); connect the GitHub repo in Vercel for auto-deploys on push.
 - **Open:** point the client's domain at the Vercel project when ready.
 

@@ -24,9 +24,23 @@ pnpm preview   # serve the production build
 | `/philosophy`   | Our Philosophy                        |
 | `/about`        | Manifesto                             |
 | `/join`         | Join the Circle (Mailchimp waitlist)  |
-| `/crownie`      | Crownie chat (demo, canned replies)   |
+| `/crownie`      | Crownie chat (live, via `server/`)    |
 
 Routing is plain `window.location.pathname` matching in `src/App.tsx`. `vercel.json` rewrites each route to `index.html`; any other path gets `public/404.html` with a 404 status. A new route goes in both files.
+
+## Crownie chat API (`server/`)
+
+Node + Express + Postgres. Each browser gets a conversation id (stored in `localStorage`); every message and reply is saved, and the last 40 are sent to the model as context. The frontend reads the API base URL from `VITE_CROWNIE_API_URL` (`.env.production`, `.env.development`).
+
+```bash
+cd server
+cp .env.example .env   # fill in
+npm ci && npm run build
+npm run migrate        # applies migrations/*.sql with MIGRATE_DATABASE_URL
+npm start
+```
+
+Crownie's prompt: `server/src/crownie.ts`.
 
 ## Structure
 

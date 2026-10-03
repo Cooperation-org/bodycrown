@@ -2681,6 +2681,15 @@ em {
   box-shadow: 0 22px 55px rgba(21, 10, 4, 0.24);
 }
 
+.composer-error {
+  width: min(100%, 49rem);
+  margin: 0.6rem auto 0;
+  color: var(--copper);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 .composer-note {
   width: min(100%, 49rem);
   margin: 0.6rem auto 0;
