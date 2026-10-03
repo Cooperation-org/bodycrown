@@ -4,6 +4,9 @@ export const mailchimpAction =
   "https://bodyandcrown.us18.list-manage.com/subscribe/post?u=9810b14e97af6e0d4580f1414&id=43908ba235&f_id=00b3abe6f0";
 export const mailchimpHoneypotName = "b_9810b14e97af6e0d4580f1414_43908ba235";
 
+export const crisisSupport =
+  "If you are in crisis, please reach out to a licensed mental-health professional or call or text 988 (US) for immediate support.";
+
 export const navLinks = [
   { href: "/meet-crownie", label: "Meet Crownie" },
   { href: "/philosophy", label: "Our Philosophy" },
@@ -59,7 +62,7 @@ export const faqs = [
   {
     question: "Is this therapy?",
     answer:
-      "No. Body & Crown is not therapy and does not diagnose or treat mental-health conditions. It offers supportive wellness tools: guided reflection, grounding, breath, and gentle presence. If you are in crisis, please reach out to a licensed mental-health professional or call or text 988 (US) for immediate support.",
+      `No. Body & Crown is not therapy and does not diagnose or treat mental-health conditions. It offers supportive wellness tools: guided reflection, grounding, breath, and gentle presence. ${crisisSupport}`,
   },
   {
     question: "Is the space open yet?",

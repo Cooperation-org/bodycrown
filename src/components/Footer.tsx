@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="content-width footer-top">
         <div>
-          <a className="footer-brand" href="#top">
+          <a className="footer-brand" href="/">
             <Crown />
             Body &amp; Crown™
           </a>

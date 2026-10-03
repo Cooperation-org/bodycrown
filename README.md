@@ -26,7 +26,7 @@ pnpm preview   # serve the production build
 | `/join`         | Join the Circle (Mailchimp waitlist)  |
 | `/crownie`      | Crownie chat (demo, canned replies)   |
 
-Routing is plain `window.location.pathname` matching in `src/App.tsx`, so when deploying, the host must serve `index.html` for every path (SPA fallback).
+Routing is plain `window.location.pathname` matching in `src/App.tsx`. `vercel.json` rewrites each route to `index.html`; any other path gets `public/404.html` with a 404 status. A new route goes in both files.
 
 ## Structure
 
