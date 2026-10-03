@@ -3558,3 +3558,54 @@ em {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Inline signup confirmation and errors (SignupForm) */
+.signup-success {
+  display: flex;
+  max-width: 34rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 3rem auto 0;
+  padding: 2.5rem 2rem;
+  border: 1px solid rgba(196, 151, 58, 0.45);
+  border-radius: 0.8rem;
+  background: rgba(255, 250, 241, 0.72);
+  text-align: center;
+  animation: message-arrival 600ms ease both;
+}
+
+.signup-success--join {
+  margin-top: 0;
+}
+
+.signup-success .crown {
+  color: var(--gold);
+  font-size: 1.75rem;
+}
+
+.signup-success p {
+  margin: 0;
+  color: var(--brown-soft);
+}
+
+.signup-success .signup-success-title {
+  color: var(--brown);
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.signup-error {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--copper);
+  font-size: 0.85rem;
+}
+
+.form-submit:disabled,
+.join-submit:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
