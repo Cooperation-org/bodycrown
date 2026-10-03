@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Crown, Divider, Quote, SecondaryLink, SectionHeading } from "@/components/ui";
 import { beliefs, manifestoHref } from "@/data/content";
+import { sitePath } from "@/lib/sitePath";
 
 function PhilosophyStatement({ title, children }: { title: ReactNode; children: ReactNode }) {
   return (
@@ -61,7 +62,7 @@ export default function PhilosophyPage() {
           <div className="content-width philosophy-page-founder-grid reveal">
             <div className="philosophy-page-founder-image">
               <img
-                src="/images/lanika-portrait.jpg"
+                src={sitePath("/images/lanika-portrait.jpg")}
                 alt="Lanika Johnson, Founder and CEO of Body & Crown"
               />
             </div>

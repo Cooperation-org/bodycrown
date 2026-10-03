@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import { Crown, Divider, Quote } from "@/components/ui";
 import { manifestoStatements } from "@/data/content";
+import { sitePath } from "@/lib/sitePath";
 
 function ManifestoStatement({
   statement,
@@ -24,17 +25,17 @@ function ManifestoFooter() {
     <footer className="manifesto-footer">
       <div className="content-width manifesto-footer-top">
         <div>
-          <a className="footer-brand" href="/">
+          <a className="footer-brand" href={sitePath("/")}>
             <Crown />
             Body &amp; Crown™
           </a>
           <p>A living space for emotional wellness.</p>
         </div>
         <nav aria-label="Footer navigation">
-          <a href="/">Home</a>
-          <a href="/meet-crownie">Meet Crownie</a>
-          <a href="/about">Manifesto</a>
-          <a href="/join">Join the Circle</a>
+          <a href={sitePath("/")}>Home</a>
+          <a href={sitePath("/meet-crownie")}>Meet Crownie</a>
+          <a href={sitePath("/about")}>Manifesto</a>
+          <a href={sitePath("/join")}>Join the Circle</a>
         </nav>
       </div>
       <p className="content-width manifesto-footer-copy">
@@ -115,10 +116,10 @@ export default function ManifestoPage() {
         </section>
 
         <section className="manifesto-actions reveal">
-          <a className="manifesto-cta" href="/join">
+          <a className="manifesto-cta" href={sitePath("/join")}>
             Step Into the Space ♛
           </a>
-          <a className="manifesto-back-link" href="/">
+          <a className="manifesto-back-link" href={sitePath("/")}>
             ← Back Home
           </a>
         </section>

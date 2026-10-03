@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import { Crown, Divider, Quote } from "@/components/ui";
 import { crisisSupport, type ChatMessage } from "@/data/content";
 import { loadConversation, sendToCrownie } from "@/lib/crownieApi";
+import { sitePath } from "@/lib/sitePath";
 
 function CrownieMark({ compact = false }: { compact?: boolean }) {
   return (
@@ -15,14 +16,14 @@ function CrownieMark({ compact = false }: { compact?: boolean }) {
 function ChatHeader() {
   return (
     <header className="chat-header">
-      <a className="chat-brand" href="/" aria-label="Body and Crown home">
+      <a className="chat-brand" href={sitePath("/")} aria-label="Body and Crown home">
         Body &amp; Crown™
       </a>
       <div className="crownie-identity" aria-label="Crownie">
         <CrownieMark compact />
         <span>Crownie</span>
       </div>
-      <a className="chat-meet-link" href="/meet-crownie" aria-label="Meet Crownie">
+      <a className="chat-meet-link" href={sitePath("/meet-crownie")} aria-label="Meet Crownie">
         <span>Meet Crownie</span>
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M5 12h14M13 6l6 6-6 6" />

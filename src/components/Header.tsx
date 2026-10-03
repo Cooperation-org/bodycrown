@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { navLinks } from "@/data/content";
 import { Crown, PrimaryCTA } from "./ui";
+import { sitePath } from "@/lib/sitePath";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function Header() {
 
   return (
     <header className="site-header">
-      <a className="brand" href="/" aria-label="Body and Crown home">
+      <a className="brand" href={sitePath("/")} aria-label="Body and Crown home">
         <Crown />
         <span>Body &amp; Crown™</span>
       </a>
@@ -22,7 +23,7 @@ export default function Header() {
             {link.label}
           </a>
         ))}
-        <PrimaryCTA href="/join">Join the Circle ♛</PrimaryCTA>
+        <PrimaryCTA href={sitePath("/join")}>Join the Circle ♛</PrimaryCTA>
       </nav>
       <button
         className="menu-button"
@@ -45,7 +46,7 @@ export default function Header() {
             {link.label}
           </a>
         ))}
-        <PrimaryCTA href="/join">Join the Circle ♛</PrimaryCTA>
+        <PrimaryCTA href={sitePath("/join")}>Join the Circle ♛</PrimaryCTA>
       </nav>
     </header>
   );

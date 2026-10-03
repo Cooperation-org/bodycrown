@@ -1,4 +1,6 @@
-export const manifestoHref = "/about";
+import { sitePath } from "@/lib/sitePath";
+
+export const manifestoHref = sitePath("/about");
 
 export const mailchimpAction =
   "https://bodyandcrown.us18.list-manage.com/subscribe/post?u=9810b14e97af6e0d4580f1414&id=43908ba235&f_id=00b3abe6f0";
@@ -8,8 +10,8 @@ export const crisisSupport =
   "If you are in crisis, please reach out to a licensed mental-health professional or call or text 988 (US) for immediate support.";
 
 export const navLinks = [
-  { href: "/meet-crownie", label: "Meet Crownie" },
-  { href: "/philosophy", label: "Our Philosophy" },
+  { href: sitePath("/meet-crownie"), label: "Meet Crownie" },
+  { href: sitePath("/philosophy"), label: "Our Philosophy" },
   { href: manifestoHref, label: "Manifesto" },
 ];
 

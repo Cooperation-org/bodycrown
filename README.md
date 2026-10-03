@@ -26,7 +26,9 @@ pnpm preview   # serve the production build
 | `/join`         | Join the Circle (Mailchimp waitlist)  |
 | `/crownie`      | Crownie chat (live, via `server/`)    |
 
-Routing is plain `window.location.pathname` matching in `src/App.tsx`. `vercel.json` rewrites each route to `index.html`; any other path gets `public/404.html` with a 404 status. A new route goes in both files.
+Routing is plain `window.location.pathname` matching in `src/App.tsx`. `vercel.json` rewrites each route to `index.html`; any other path gets `public/404.html` with a 404 status. A new route goes in both files and in `scripts/build-subpath.sh`.
+
+Demo under a path prefix (no SPA fallback on that host): `scripts/build-subpath.sh /bodycrown/ /var/www/demos/bodycrown` serves at https://demos.linkedtrust.us/bodycrown/.
 
 ## Crownie chat API (`server/`)
 
