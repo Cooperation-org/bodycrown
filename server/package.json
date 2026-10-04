@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "test": "tsc && node --test dist/llm.test.js",
     "start": "node dist/index.js",
     "migrate": "node dist/migrate.js"
   },
