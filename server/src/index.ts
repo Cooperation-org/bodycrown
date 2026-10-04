@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import express, { type NextFunction, type Request, type Response } from "express";
 import pg from "pg";
 import { crownieSystemPrompt } from "./crownie.js";
+import { clientOptions, complete, fallbackFromEnv, type Provider } from "./llm.js";
 
 function required(name: string): string {
   const value = process.env[name];
@@ -11,9 +12,33 @@ function required(name: string): string {
 
 const port = Number(process.env.PORT ?? 8065);
 const corsOrigins = new Set(required("CORS_ORIGINS").split(","));
-const model = required("LLM_MODEL");
 const pool = new pg.Pool({ connectionString: required("DATABASE_URL"), max: 5 });
-const llm = new Anthropic({ apiKey: required("LLM_API_KEY"), baseURL: required("LLM_BASE_URL") });
+
+// Primary model answers first; the optional fallback answers only if the primary fails or is slow.
+const modelTimeoutMs = Number(process.env.LLM_TIMEOUT_MS ?? 20_000);
+const fallbackEnv = fallbackFromEnv(process.env);
+const providers: Provider[] = [
+  {
+    label: "primary",
+    model: required("LLM_MODEL"),
+    messages: new Anthropic({
+      apiKey: required("LLM_API_KEY"),
+      baseURL: required("LLM_BASE_URL"),
+      ...clientOptions("primary", Boolean(fallbackEnv), modelTimeoutMs),
+    }).messages,
+  },
+];
+if (fallbackEnv) {
+  providers.push({
+    label: "fallback",
+    model: fallbackEnv.model,
+    messages: new Anthropic({
+      apiKey: fallbackEnv.apiKey,
+      baseURL: fallbackEnv.baseUrl,
+      ...clientOptions("fallback", true, modelTimeoutMs),
+    }).messages,
+  });
+}
 
 const MAX_MESSAGE_CHARS = 2000;
 const CONTEXT_MESSAGES = 40;
@@ -126,19 +151,9 @@ app.post("/visitors/:id/messages", async (req, res) => {
 
   let reply: string;
   try {
-    const response = await llm.messages.create({
-      model,
-      max_tokens: 600,
-      system: crownieSystemPrompt,
-      messages: conversation,
-    });
-    reply = response.content
-      .flatMap((block) => (block.type === "text" ? [block.text] : []))
-      .join("")
-      .trim();
-    if (!reply) throw new Error("empty reply");
+    reply = await complete(providers, crownieSystemPrompt, conversation);
   } catch (error) {
-    console.error("model call failed", error);
+    console.error("all model providers failed", error);
     res.status(502).json({ error: "Crownie couldn't answer just now. Please try again." });
     return;
   }
