@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import InvitationSection from "@/components/InvitationSection";
 import { Crown, PrimaryCTA, Quote, SectionHeading } from "@/components/ui";
 import { sampleConversation } from "@/data/content";
+import { sitePath } from "@/lib/sitePath";
 
 function ConversationBlock() {
   return (
@@ -58,10 +59,10 @@ export default function MeetCrowniePage() {
               &amp; Crown, a living space for emotional wellness that grows with you. A place
               to reconnect with yourself, with each other, and with the world.
             </p>
-            <PrimaryCTA href="/crownie">Step Inside ♛</PrimaryCTA>
+            <PrimaryCTA href={sitePath("/crownie")}>Step Inside ♛</PrimaryCTA>
           </div>
           <div className="crownie-page-hero-image reveal">
-            <img src="/images/hero-editorial.jpg" alt="Woman resting in warm natural light" />
+            <img src={sitePath("/images/hero-editorial.jpg")} alt="Woman resting in warm natural light" />
             <Quote>She doesn&apos;t rush you. She doesn&apos;t judge you. She simply stays.</Quote>
           </div>
         </section>
@@ -84,7 +85,7 @@ export default function MeetCrowniePage() {
           <div className="content-width crownie-explanation-grid">
             <div className="crownie-explanation-image reveal">
               <img
-                src="/images/cultural-editorial.jpg"
+                src={sitePath("/images/cultural-editorial.jpg")}
                 alt="Woman in profile against a warm earth-toned background"
               />
             </div>

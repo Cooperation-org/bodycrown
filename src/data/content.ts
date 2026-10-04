@@ -1,4 +1,6 @@
-export const manifestoHref = "/about";
+import { sitePath } from "@/lib/sitePath";
+
+export const manifestoHref = sitePath("/about");
 
 export const mailchimpAction =
   "https://bodyandcrown.us18.list-manage.com/subscribe/post?u=9810b14e97af6e0d4580f1414&id=43908ba235&f_id=00b3abe6f0";
@@ -8,8 +10,8 @@ export const crisisSupport =
   "If you are in crisis, please reach out to a licensed mental-health professional or call or text 988 (US) for immediate support.";
 
 export const navLinks = [
-  { href: "/meet-crownie", label: "Meet Crownie" },
-  { href: "/philosophy", label: "Our Philosophy" },
+  { href: sitePath("/meet-crownie"), label: "Meet Crownie" },
+  { href: sitePath("/philosophy"), label: "Our Philosophy" },
   { href: manifestoHref, label: "Manifesto" },
 ];
 
@@ -129,22 +131,3 @@ export type ChatMessage = {
   speaker: Speaker;
   text: string;
 };
-
-export const initialChatMessages: ChatMessage[] = [
-  {
-    id: 1,
-    speaker: "Her",
-    text: "I'm so tired. But I feel guilty even saying it.",
-  },
-  {
-    id: 2,
-    speaker: "Crownie",
-    text: "Come, sit with me a moment. Tired isn't a confession. It's your body telling a truth you've been too busy to hear. You've carried everyone. Who has been carrying you?",
-  },
-];
-
-// Placeholder replies until Crownie is wired to a real backend.
-export const crownieDemoResponses = [
-  "I know. And being used to it is just a quieter way of saying worn thin. You don't have to set it all down tonight. Place one thing on the floor beside you. We can begin there.",
-  "Come, sit with me a moment. Tired isn't a confession. It's your body telling a truth you've been too busy to hear. You've carried everyone. Who has been carrying you?",
-];

@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Crown, Divider, Quote } from "@/components/ui";
-import {
-  crisisSupport,
-  crownieDemoResponses,
-  initialChatMessages,
-  type ChatMessage,
-} from "@/data/content";
+import { crisisSupport, type ChatMessage } from "@/data/content";
+import { loadConversation, sendToCrownie } from "@/lib/crownieApi";
+import { sitePath } from "@/lib/sitePath";
 
 function CrownieMark({ compact = false }: { compact?: boolean }) {
   return (
@@ -19,14 +16,14 @@ function CrownieMark({ compact = false }: { compact?: boolean }) {
 function ChatHeader() {
   return (
     <header className="chat-header">
-      <a className="chat-brand" href="/" aria-label="Body and Crown home">
+      <a className="chat-brand" href={sitePath("/")} aria-label="Body and Crown home">
         Body &amp; Crown™
       </a>
       <div className="crownie-identity" aria-label="Crownie">
         <CrownieMark compact />
         <span>Crownie</span>
       </div>
-      <a className="chat-meet-link" href="/meet-crownie" aria-label="Meet Crownie">
+      <a className="chat-meet-link" href={sitePath("/meet-crownie")} aria-label="Meet Crownie">
         <span>Meet Crownie</span>
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="M5 12h14M13 6l6 6-6 6" />
@@ -71,11 +68,13 @@ function Composer({
   onChange,
   onSubmit,
   sending,
+  error,
 }: {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
   sending: boolean;
+  error: string;
 }) {
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -109,40 +108,53 @@ function Composer({
           </svg>
         </button>
       </form>
+      {error && (
+        <p className="composer-error" role="alert">
+          {error}
+        </p>
+      )}
       <p className="composer-note">{crisisSupport}</p>
     </div>
   );
 }
 
 export default function CrownieChatPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>(initialChatMessages);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
-  const responseIndex = useRef(0);
+  const [error, setError] = useState("");
   const conversationEnd = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    loadConversation()
+      .then(setMessages)
+      .catch(() => setError("Your earlier conversation couldn't be loaded."));
+  }, []);
 
   useEffect(() => {
     conversationEnd.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, sending]);
 
-  function sendMessage() {
+  async function sendMessage() {
     const message = draft.trim();
     if (!message || sending) return;
 
-    setMessages((current) => [...current, { id: Date.now(), speaker: "Her", text: message }]);
+    const pending: ChatMessage = { id: -Date.now(), speaker: "Her", text: message };
+    setMessages((current) => [...current, pending]);
     setDraft("");
+    setError("");
     setSending(true);
-
-    // Demo only: cycle through canned replies until a real Crownie backend exists.
-    window.setTimeout(() => {
-      const reply = crownieDemoResponses[responseIndex.current % crownieDemoResponses.length];
-      responseIndex.current += 1;
-      setMessages((current) => [
-        ...current,
-        { id: Date.now() + 1, speaker: "Crownie", text: reply },
-      ]);
+    try {
+      const reply = await sendToCrownie(message);
+      setMessages((current) => [...current, reply]);
+    } catch (failure) {
+      // Nothing was saved: take the message back out and return it to the box.
+      setMessages((current) => current.filter((m) => m !== pending));
+      setDraft(message);
+      setError((failure as Error).message);
+    } finally {
       setSending(false);
-    }, 900);
+    }
   }
 
   return (
@@ -170,7 +182,13 @@ export default function CrownieChatPage() {
           <div ref={conversationEnd} />
         </div>
       </section>
-      <Composer value={draft} onChange={setDraft} onSubmit={sendMessage} sending={sending} />
+      <Composer
+        value={draft}
+        onChange={setDraft}
+        onSubmit={sendMessage}
+        sending={sending}
+        error={error}
+      />
     </main>
   );
 }

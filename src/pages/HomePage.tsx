@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import InvitationSection from "@/components/InvitationSection";
 import { Crown, Divider, PrimaryCTA, Quote, SecondaryLink, SectionHeading } from "@/components/ui";
 import { beliefs, manifestoHref, pathways, sampleConversation } from "@/data/content";
+import { sitePath } from "@/lib/sitePath";
 
 function Hero() {
   return (
@@ -31,7 +32,7 @@ function Hero() {
       <div className="hero-visual reveal">
         <div className="hero-image-wrap">
           <img
-            src="/images/hero-editorial.jpg"
+            src={sitePath("/images/hero-editorial.jpg")}
             alt="Woman wrapped in flowing white fabric in warm light"
           />
         </div>
@@ -62,6 +63,9 @@ function CrownieSection() {
         <p className="conversation-close reveal">
           She doesn&apos;t rush you. She doesn&apos;t judge you. She simply stays.
         </p>
+        <div className="conversation-action reveal">
+          <PrimaryCTA href={sitePath("/crownie")}>Step Inside ♛</PrimaryCTA>
+        </div>
       </div>
     </section>
   );
@@ -134,7 +138,7 @@ function FounderSection() {
       <div className="content-width founder-grid reveal">
         <div className="founder-image">
           <img
-            src="/images/lanika-portrait.jpg"
+            src={sitePath("/images/lanika-portrait.jpg")}
             alt="Lanika Johnson, Founder and CEO of Body & Crown"
           />
         </div>
@@ -232,7 +236,7 @@ function CultureSection() {
       <div className="content-width culture-grid">
         <div className="culture-image reveal">
           <img
-            src="/images/cultural-editorial.jpg"
+            src={sitePath("/images/cultural-editorial.jpg")}
             alt="Woman in profile against a warm earth-toned background"
           />
         </div>

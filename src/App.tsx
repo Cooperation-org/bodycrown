@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import useReveal from "@/hooks/useReveal";
+import { currentRoute } from "@/lib/sitePath";
 import CrownieChatPage from "@/pages/CrownieChatPage";
 import HomePage from "@/pages/HomePage";
 import JoinPage from "@/pages/JoinPage";
@@ -18,6 +19,6 @@ const routes: Record<string, ComponentType> = {
 
 export default function App() {
   useReveal();
-  const Page = routes[window.location.pathname] ?? HomePage;
+  const Page = routes[currentRoute()] ?? HomePage;
   return <Page />;
 }

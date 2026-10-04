@@ -512,6 +512,12 @@ em {
   text-align: center;
 }
 
+.conversation-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
 .pathways {
   position: relative;
   overflow: hidden;
@@ -2679,6 +2685,15 @@ em {
   border-radius: 0 0 1.75rem 1.75rem;
   background: var(--cream);
   box-shadow: 0 22px 55px rgba(21, 10, 4, 0.24);
+}
+
+.composer-error {
+  width: min(100%, 49rem);
+  margin: 0.6rem auto 0;
+  color: var(--copper);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  text-align: center;
 }
 
 .composer-note {
