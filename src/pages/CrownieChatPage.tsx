@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Crown, Divider, Quote } from "@/components/ui";
-import { crownieDemoResponses, initialChatMessages, type ChatMessage } from "@/data/content";
+import {
+  crisisSupport,
+  crownieDemoResponses,
+  initialChatMessages,
+  type ChatMessage,
+} from "@/data/content";
 
 function CrownieMark({ compact = false }: { compact?: boolean }) {
   return (
@@ -104,6 +109,7 @@ function Composer({
           </svg>
         </button>
       </form>
+      <p className="composer-note">{crisisSupport}</p>
     </div>
   );
 }

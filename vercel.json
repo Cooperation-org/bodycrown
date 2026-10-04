@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/meet-crownie", "destination": "/index.html" },
+    { "source": "/philosophy", "destination": "/index.html" },
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/join", "destination": "/index.html" },
+    { "source": "/crownie", "destination": "/index.html" }
+  ]
 }

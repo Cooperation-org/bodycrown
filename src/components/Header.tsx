@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <header className="site-header">
-      <a className="brand" href="#top" aria-label="Body and Crown home">
+      <a className="brand" href="/" aria-label="Body and Crown home">
         <Crown />
         <span>Body &amp; Crown™</span>
       </a>
