@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { complete, fallbackFromEnv, type Provider } from "./llm.js";
+import Anthropic from "@anthropic-ai/sdk";
+import { clientOptions, complete, fallbackFromEnv, type Provider } from "./llm.js";
 
 type Reply = { content: { type: string; text?: string }[] };
 
@@ -130,4 +131,42 @@ test("fallback settings: a partial set is rejected", () => {
     () => fallbackFromEnv({ LLM_FALLBACK_BASE_URL: "https://x", LLM_FALLBACK_API_KEY: "k" }),
     /must be set together/,
   );
+});
+
+test("without a fallback no client options are set", () => {
+  assert.deepEqual(clientOptions("primary", false, 20_000), {});
+});
+
+test("without a fallback the real SDK client behaves as main builds it", () => {
+  // main builds the client with only apiKey and baseURL, so the SDK's own defaults apply.
+  const asOnMain = new Anthropic({ apiKey: "k", baseURL: "http://127.0.0.1:1" });
+  const asNow = new Anthropic({
+    apiKey: "k",
+    baseURL: "http://127.0.0.1:1",
+    ...clientOptions("primary", false, 20_000),
+  });
+  assert.equal(asNow.timeout, asOnMain.timeout);
+  assert.equal(asNow.maxRetries, asOnMain.maxRetries);
+  assert.equal(asNow.timeout, 600_000);
+  assert.equal(asNow.maxRetries, 2);
+});
+
+test("with a fallback the primary gets a short timeout and no retries", () => {
+  const primary = new Anthropic({
+    apiKey: "k",
+    baseURL: "http://127.0.0.1:1",
+    ...clientOptions("primary", true, 20_000),
+  });
+  assert.equal(primary.timeout, 20_000);
+  assert.equal(primary.maxRetries, 0);
+});
+
+test("with a fallback the fallback gets the same timeout and one retry", () => {
+  const fallback = new Anthropic({
+    apiKey: "k",
+    baseURL: "http://127.0.0.1:1",
+    ...clientOptions("fallback", true, 20_000),
+  });
+  assert.equal(fallback.timeout, 20_000);
+  assert.equal(fallback.maxRetries, 1);
 });

@@ -35,6 +35,23 @@ async function ask(provider: Provider, system: string, messages: Anthropic.Messa
   return reply;
 }
 
+/**
+ * Client options per role. Without a fallback, no options are set, so the SDK's own defaults
+ * apply (10 minute timeout, 2 retries) exactly as before the fallback existed. With a fallback,
+ * each model gets a bounded wait so a slow primary hands over in seconds, and the primary does
+ * not retry because the fallback is its retry.
+ */
+export function clientOptions(
+  role: "primary" | "fallback",
+  hasFallback: boolean,
+  timeoutMs: number,
+): { timeout?: number; maxRetries?: number } {
+  if (!hasFallback) return {};
+  return role === "primary"
+    ? { timeout: timeoutMs, maxRetries: 0 }
+    : { timeout: timeoutMs, maxRetries: 1 };
+}
+
 /** Asks each provider in order and returns the first reply; throws the last error if all fail. */
 export async function complete(
   providers: Provider[],

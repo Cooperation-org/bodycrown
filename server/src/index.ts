@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import express, { type NextFunction, type Request, type Response } from "express";
 import pg from "pg";
 import { crownieSystemPrompt } from "./crownie.js";
-import { complete, fallbackFromEnv, type Provider } from "./llm.js";
+import { clientOptions, complete, fallbackFromEnv, type Provider } from "./llm.js";
 
 function required(name: string): string {
   const value = process.env[name];
@@ -24,8 +24,7 @@ const providers: Provider[] = [
     messages: new Anthropic({
       apiKey: required("LLM_API_KEY"),
       baseURL: required("LLM_BASE_URL"),
-      timeout: modelTimeoutMs,
-      maxRetries: fallbackEnv ? 0 : 2,
+      ...clientOptions("primary", Boolean(fallbackEnv), modelTimeoutMs),
     }).messages,
   },
 ];
@@ -36,8 +35,7 @@ if (fallbackEnv) {
     messages: new Anthropic({
       apiKey: fallbackEnv.apiKey,
       baseURL: fallbackEnv.baseUrl,
-      timeout: modelTimeoutMs,
-      maxRetries: 1,
+      ...clientOptions("fallback", true, modelTimeoutMs),
     }).messages,
   });
 }
