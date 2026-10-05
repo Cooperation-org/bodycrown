@@ -104,6 +104,7 @@ export default function SignupForm({ variant }: { variant: "invitation" | "join"
         label="First Name"
         name="FNAME"
         placeholder="Your first name"
+        autoComplete="given-name"
       />
       <TextInput
         id={`${prefix}-email`}
@@ -111,6 +112,7 @@ export default function SignupForm({ variant }: { variant: "invitation" | "join"
         name="EMAIL"
         type="email"
         placeholder="your@email.com"
+        autoComplete="email"
         required
       />
       <button

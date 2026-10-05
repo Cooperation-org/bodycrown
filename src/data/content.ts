@@ -8,6 +8,35 @@ export const mailchimpHoneypotName = "b_9810b14e97af6e0d4580f1414_43908ba235";
 
 export const crisisSupport =
   "If you are in crisis, please reach out to a licensed mental-health professional or call or text 988 (US) for immediate support.";
+export const crisisElsewhere = "Outside the US, find a local line at";
+// The two short lines under the message box. AI-drafted; needs Golda and Lanika's sign-off.
+export const crisisShort = "In a crisis? Call or text 988 (US), or find a local line at";
+export const helplineDirectoryUrl = "https://findahelpline.com";
+export const helplineDirectoryLabel = "findahelpline.com";
+
+// AI-drafted from the facts of how the chat works today; needs Golda and Lanika's sign-off.
+export const chatDisclosure =
+  "Crownie is an AI, not therapy. Your messages are saved, and the Body & Crown team and its AI providers can read them.";
+export const chatPlaceholder = "Write whatever is on your mind";
+// The wording the server already uses when it cannot answer.
+export const chatUnavailable = "Crownie couldn't answer just now. Please try again.";
+// Equal to MAX_MESSAGE_CHARS in server/src/index.ts. The count only appears close to the limit, so the
+// box stays quiet for ordinary messages. AI-drafted wording; needs Golda and Lanika's sign-off.
+export const chatMessageLimit = 2000;
+export const chatCountFrom = 1800;
+export const chatCount = (length: number) =>
+  `${length.toLocaleString("en-US")} of ${chatMessageLimit.toLocaleString("en-US")}`;
+export const chatTooLong = (over: number) =>
+  `Messages can be up to ${chatMessageLimit.toLocaleString("en-US")} characters, and this one is ${over.toLocaleString("en-US")} over. You could send it in two parts.`;
+
+export const pageTitles: Record<string, string> = {
+  "/": "Body & Crown™",
+  "/meet-crownie": "Meet Crownie · Body & Crown™",
+  "/philosophy": "Our Philosophy · Body & Crown™",
+  "/about": "Manifesto · Body & Crown™",
+  "/join": "Join the Circle · Body & Crown™",
+  "/crownie": "Crownie · Body & Crown™",
+};
 
 export const navLinks = [
   { href: sitePath("/meet-crownie"), label: "Meet Crownie" },
@@ -64,12 +93,12 @@ export const faqs = [
   {
     question: "Is this therapy?",
     answer:
-      `No. Body & Crown is not therapy and does not diagnose or treat mental-health conditions. It offers supportive wellness tools: guided reflection, grounding, breath, and gentle presence. ${crisisSupport}`,
+      `No. Body & Crown is not therapy and does not diagnose or treat mental-health conditions. It offers supportive wellness tools: guided reflection, grounding, breath, and gentle presence. ${crisisSupport} ${crisisElsewhere} ${helplineDirectoryLabel}.`,
   },
   {
     question: "Is the space open yet?",
     answer:
-      "Crownie is already alive. A founding circle of women is inside right now, shaping her as she grows. Crown Reset, the seven-day return, opens soon, and access widens season by season. Leave your name above and you'll be among the next women welcomed in. ♛",
+      "Crownie is already alive. A founding circle of women is inside right now, shaping her as she grows. Crown Reset, the seven-day return, opens soon, and access widens season by season. Leave your name and you'll be among the next women welcomed in. ♛",
   },
 ];
 

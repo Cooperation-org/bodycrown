@@ -125,7 +125,16 @@ figure {
     linear-gradient(180deg, rgba(255, 250, 241, 0.96), rgba(245, 239, 228, 0.91)),
     color-mix(in srgb, var(--cream) 92%, transparent);
   box-shadow: 0 10px 35px rgba(58, 32, 16, 0.06);
+}
+
+/* The blur sits on its own layer. On the header itself it would trap the fixed full-screen mobile menu inside the header. */
+.site-header::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
   backdrop-filter: blur(14px);
+  content: "";
+  pointer-events: none;
 }
 
 .site-header::before {
@@ -191,6 +200,37 @@ figure {
   transform-origin: left;
 }
 
+/* Small text links keep their look but get an invisible box of about 44px to tap. */
+.brand,
+.footer-brand,
+.chat-brand,
+.chat-meet-link,
+.composer-note a {
+  position: relative;
+}
+
+.brand::before,
+.footer-brand::before,
+.chat-brand::before,
+.chat-meet-link::before,
+.desktop-nav > a:not(.primary-cta)::before,
+.footer-nav a::before,
+.secondary-link::before,
+.composer-note a::before {
+  position: absolute;
+  inset: -0.75rem -0.5rem;
+  content: "";
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .primary-cta,
 .form-submit {
   display: inline-flex;
@@ -241,6 +281,8 @@ figure {
 .hero {
   position: relative;
   isolation: isolate;
+  /* The decorative arcs run past the page edge. Desktop browsers hide that, but a phone widens the whole layout to fit it, which pushes the fixed header's menu button off screen. */
+  overflow-x: clip;
   display: grid;
   min-height: 56rem;
   grid-template-columns: minmax(0, 1.08fr) minmax(24rem, 0.92fr);
@@ -359,6 +401,7 @@ em {
 }
 
 .hero-image-wrap {
+  position: relative;
   height: 100%;
   overflow: hidden;
   border-radius: 1.6rem 1.6rem 8rem 1.6rem;
@@ -2588,6 +2631,8 @@ em {
   color: var(--brown);
   font-size: 1rem;
   line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .chat-message--crownie {
@@ -2612,6 +2657,8 @@ em {
 
 .chat-message--crownie > p:last-child {
   padding-left: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   color: var(--brown);
   font-family: var(--serif);
   font-size: clamp(1.65rem, 2.4vw, 2.25rem);
@@ -2696,6 +2743,20 @@ em {
   text-align: center;
 }
 
+.composer-count {
+  width: min(100%, 49rem);
+  margin: 0.6rem auto 0;
+  color: var(--brown-soft);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.composer-count--over {
+  color: var(--copper);
+  font-size: 0.85rem;
+}
+
 .composer-note {
   width: min(100%, 49rem);
   margin: 0.6rem auto 0;
@@ -2704,6 +2765,15 @@ em {
   font-size: 0.78rem;
   line-height: 1.5;
   text-align: center;
+}
+
+.composer-note + .composer-note {
+  margin-top: 0.3rem;
+}
+
+.composer-note a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .composer {
@@ -3132,7 +3202,7 @@ em {
   }
 
   .hero-caption {
-    right: 1.25rem;
+    right: 4rem;
     bottom: 1.25rem;
   }
 

@@ -25,7 +25,7 @@ function Hero() {
           A culturally rooted home for emotional wellness, growing with you over time.
         </p>
         <div className="hero-action">
-          <PrimaryCTA href="#crownie">Step Inside ♛</PrimaryCTA>
+          <PrimaryCTA href={sitePath("/crownie")}>Step Inside ♛</PrimaryCTA>
           <small>A gentle space, alive and growing ♛</small>
         </div>
       </div>

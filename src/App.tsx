@@ -1,4 +1,5 @@
-import type { ComponentType } from "react";
+import { useEffect, type ComponentType } from "react";
+import { pageTitles } from "@/data/content";
 import useReveal from "@/hooks/useReveal";
 import { currentRoute } from "@/lib/sitePath";
 import CrownieChatPage from "@/pages/CrownieChatPage";
@@ -19,6 +20,10 @@ const routes: Record<string, ComponentType> = {
 
 export default function App() {
   useReveal();
-  const Page = routes[currentRoute()] ?? HomePage;
+  const route = currentRoute();
+  const Page = routes[route] ?? HomePage;
+  useEffect(() => {
+    document.title = pageTitles[route] ?? pageTitles["/"];
+  }, [route]);
   return <Page />;
 }

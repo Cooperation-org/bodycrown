@@ -52,16 +52,20 @@ export function clientOptions(
     : { timeout: timeoutMs, maxRetries: 1 };
 }
 
-/** Asks each provider in order and returns the first reply; throws the last error if all fail. */
+/**
+ * Asks each provider in order and returns the first reply, with the label of the
+ * provider that wrote it (so the log can say which model answered). Throws the
+ * last error if all fail.
+ */
 export async function complete(
   providers: Provider[],
   system: string,
   messages: Anthropic.MessageParam[],
-): Promise<string> {
+): Promise<{ reply: string; provider: string }> {
   let lastError: unknown = new Error("no model provider configured");
   for (const provider of providers) {
     try {
-      return await ask(provider, system, messages);
+      return { reply: await ask(provider, system, messages), provider: provider.label };
     } catch (error) {
       lastError = error;
       console.error(`model call failed (${provider.label})`, error);
