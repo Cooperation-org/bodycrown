@@ -236,8 +236,8 @@ function CultureSection() {
       <div className="content-width culture-grid">
         <div className="culture-image reveal">
           <img
-            src={sitePath("/images/cultural-editorial.jpg")}
-            alt="Woman in profile against a warm earth-toned background"
+            src={sitePath("/images/home-voice.jpg")}
+            alt="Woman with curly hair wrapped in white fabric, eyes closed, against a painted floral backdrop"
           />
         </div>
         <div className="culture-copy reveal">
