@@ -23,8 +23,10 @@ function provider(label: string, outcome: Reply | Error) {
 }
 
 const text = (t: string): Reply => ({ content: [{ type: "text", text: t }] });
-const ask = (providers: Provider[]) =>
-  complete(providers, "system prompt", [{ role: "user", content: "hello" }]);
+const ask = async (providers: Provider[]) =>
+  (await complete(providers, "system prompt", [{ role: "user", content: "hello" }])).reply;
+const askWho = async (providers: Provider[]) =>
+  (await complete(providers, "system prompt", [{ role: "user", content: "hello" }])).provider;
 
 // Silence the expected error logs from failing providers.
 const quiet = () => {
@@ -169,4 +171,14 @@ test("with a fallback the fallback gets the same timeout and one retry", () => {
   });
   assert.equal(fallback.timeout, 20_000);
   assert.equal(fallback.maxRetries, 1);
+});
+
+test("the result names the provider that answered", async () => {
+  const restore = quiet();
+  const primary = provider("primary", new Error("down"));
+  const fallback = provider("fallback", text("ok"));
+  assert.equal(await askWho([primary.p, fallback.p]), "fallback");
+  restore();
+  const healthy = provider("primary", text("ok"));
+  assert.equal(await askWho([healthy.p, fallback.p]), "primary");
 });

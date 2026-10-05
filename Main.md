@@ -32,7 +32,8 @@ Hub for the Body & Crown website project: where everything lives and how it fits
 - **Open:** Crownie's instructions in `server/src/crownie.ts` are AI-written placeholders around the site's own copy; replace with the founder's guidance.
 - **Open:** API moves to its own VM: `cobox/ansible/vms/bodycrown/` (needs VM IP and API domain).
 - **Open:** journal.
-- **Open:** deploys are manual (`npx vercel deploy --prod`); connect the GitHub repo in Vercel for auto-deploys on push.
+- **Done:** the GitHub repo is connected to Vercel; every merge to `main` deploys to production (checked against the deployment list). The VM 200 demo and API are separate: the API changes only when its code is rebuilt and the service restarted, and the demo only when `scripts/build-subpath.sh` is run and copied to `/var/www/demos/bodycrown`.
+- **Done:** each conversation is protected by a secret token (migration `002_visitor_token.sql`); without it a conversation cannot be read or written. This holds whenever `AUTH_REQUIRED` is on, which is the default. `AUTH_REQUIRED=false` exists only for a short rollout window and turns the protection off while it lasts, so the VM 200 `.env` must not keep it.
 - **Open:** point the client's domain at the Vercel project when ready.
 
 ## Notes

@@ -11,6 +11,15 @@ export default function Header() {
     return () => document.body.classList.remove("menu-open");
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
   return (
     <header className="site-header">
       <a className="brand" href={sitePath("/")} aria-label="Body and Crown home">

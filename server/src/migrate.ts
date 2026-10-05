@@ -1,5 +1,5 @@
 // Applies migrations/*.sql in name order, once each. Run with the owner role:
-//   MIGRATE_DATABASE_URL=postgresql://bodycrown_owner@10.0.0.100/bodycrown npm run migrate
+//   MIGRATE_DATABASE_URL=postgresql://<owner_user>@<db-host>/<database> npm run migrate
 import { readdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import pg from "pg";

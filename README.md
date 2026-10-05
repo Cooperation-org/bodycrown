@@ -32,7 +32,7 @@ Demo under a path prefix (no SPA fallback on that host): `scripts/build-subpath.
 
 ## Crownie chat API (`server/`)
 
-Node + Express + Postgres. Each browser gets a conversation id (stored in `localStorage`); every message and reply is saved, and the last 40 are sent to the model as context. The frontend reads the API base URL from `VITE_CROWNIE_API_URL` (`.env.production`, `.env.development`).
+Node + Express + Postgres. Each browser gets a conversation id and a secret token (both stored in `localStorage`); the token is shown once, only its SHA-256 is kept, and every read and write must send it as `Authorization: Bearer <token>`. Every message and reply is saved, and the last 40 are sent to the model as context. Migrations: `npm run migrate` (run it before starting a new version). Safe order for a release that changes the token: migrate, start the new server with `AUTH_REQUIRED=false`, deploy the frontend (Vercel and the demo), wait until the log stops showing "request without a token accepted", then remove the line and restart. While it is `false` the token protects nothing. The frontend reads the API base URL from `VITE_CROWNIE_API_URL` (`.env.production`, `.env.development`).
 
 ```bash
 cd server

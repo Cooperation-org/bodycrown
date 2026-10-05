@@ -1,6 +1,17 @@
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Crown, Divider, Quote } from "@/components/ui";
-import { crisisSupport, type ChatMessage } from "@/data/content";
+import {
+  chatCount,
+  chatCountFrom,
+  chatDisclosure,
+  chatMessageLimit,
+  chatPlaceholder,
+  chatTooLong,
+  crisisShort,
+  helplineDirectoryLabel,
+  helplineDirectoryUrl,
+  type ChatMessage,
+} from "@/data/content";
 import { loadConversation, sendToCrownie } from "@/lib/crownieApi";
 import { sitePath } from "@/lib/sitePath";
 
@@ -63,6 +74,19 @@ function LoadingState() {
   );
 }
 
+/** The sentence with its phone number as a link a phone can dial; plain text if the number is not found exactly once. */
+function CallableNumber({ text, number }: { text: string; number: string }) {
+  const parts = text.split(number);
+  if (parts.length !== 2) return <>{text}</>;
+  return (
+    <>
+      {parts[0]}
+      <a href={`tel:${number}`}>{number}</a>
+      {parts[1]}
+    </>
+  );
+}
+
 function Composer({
   value,
   onChange,
@@ -76,6 +100,25 @@ function Composer({
   sending: boolean;
   error: string;
 }) {
+  const box = useRef<HTMLTextAreaElement>(null);
+  // Counted the way the server counts: after trimming.
+  const length = value.trim().length;
+  const over = length - chatMessageLimit;
+
+  // Grow with what she writes (the stylesheet caps the height), and shrink back after sending.
+  useLayoutEffect(() => {
+    const element = box.current;
+    if (!element) return;
+    const fit = () => {
+      element.style.height = "auto";
+      element.style.height = `${element.scrollHeight}px`;
+    };
+    fit();
+    // Turning the phone changes how the lines wrap.
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, [value]);
+
   function submit(event: FormEvent) {
     event.preventDefault();
     onSubmit();
@@ -85,10 +128,14 @@ function Composer({
     <div className="composer-shell">
       <form className="composer" onSubmit={submit}>
         <textarea
+          ref={box}
           aria-label="Message Crownie"
+          placeholder={chatPlaceholder}
           rows={1}
           value={value}
           disabled={sending}
+          aria-invalid={over > 0}
+          aria-describedby={length >= chatCountFrom ? "composer-count" : undefined}
           onChange={(event) => onChange(event.target.value)}
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
@@ -101,7 +148,7 @@ function Composer({
           className="send-button"
           type="submit"
           aria-label="Send message"
-          disabled={sending || !value.trim()}
+          disabled={sending || !value.trim() || over > 0}
         >
           <svg aria-hidden="true" viewBox="0 0 24 24">
             <path d="M12 19V5M6 11l6-6 6 6" />
@@ -113,7 +160,18 @@ function Composer({
           {error}
         </p>
       )}
-      <p className="composer-note">{crisisSupport}</p>
+      {length >= chatCountFrom && (
+        <p id="composer-count" className={`composer-count${over > 0 ? " composer-count--over" : ""}`} role="status">
+          {over > 0 ? chatTooLong(over) : chatCount(length)}
+        </p>
+      )}
+      <p className="composer-note">{chatDisclosure}</p>
+      <p className="composer-note">
+        <CallableNumber text={crisisShort} number="988" />{" "}
+        <a href={helplineDirectoryUrl} target="_blank" rel="noopener noreferrer">
+          {helplineDirectoryLabel}
+        </a>
+      </p>
     </div>
   );
 }
@@ -137,7 +195,7 @@ export default function CrownieChatPage() {
 
   async function sendMessage() {
     const message = draft.trim();
-    if (!message || sending) return;
+    if (!message || sending || message.length > chatMessageLimit) return;
 
     const pending: ChatMessage = { id: -Date.now(), speaker: "Her", text: message };
     setMessages((current) => [...current, pending]);
@@ -159,6 +217,7 @@ export default function CrownieChatPage() {
 
   return (
     <main className="chat-experience">
+      <h1 className="visually-hidden">Crownie</h1>
       <ChatHeader />
       <section className="chat-conversation" aria-live="polite">
         <div className="chat-welcome">

@@ -65,6 +65,7 @@ export function TextInput({
   type = "text",
   placeholder,
   required,
+  autoComplete,
 }: {
   id: string;
   label: string;
@@ -72,11 +73,19 @@ export function TextInput({
   type?: "text" | "email";
   placeholder: string;
   required?: boolean;
+  autoComplete?: string;
 }) {
   return (
     <label className="field" htmlFor={id}>
       <span>{label}</span>
-      <input id={id} name={name} type={type} placeholder={placeholder} required={required} />
+      <input
+        id={id}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        required={required}
+        autoComplete={autoComplete}
+      />
     </label>
   );
 }

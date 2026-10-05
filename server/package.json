@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "test": "tsc && node --test dist/llm.test.js",
+    "test": "tsc && node --test dist/llm.test.js dist/auth.test.js dist/crownie.test.js",
     "start": "node dist/index.js",
     "migrate": "node dist/migrate.js"
   },
